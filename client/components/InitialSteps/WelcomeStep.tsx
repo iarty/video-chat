@@ -1,9 +1,11 @@
+import { FC } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled, { keyframes } from 'styled-components'
 import Image from 'next/image'
 import handImg from 'public/static/hand.png'
 import { ArrowRightIcon } from 'react-line-awesome'
+import { useRouter } from 'next/router'
 
 const rotate = keyframes`
   0% { transform: rotate(0deg); }
@@ -27,7 +29,7 @@ const StyledImage = styled(Image)`
   margin-right: 10px;
 `
 
-const StyledTitle = styled.h1`
+const StyledTitle = styled.h2`
   font-weight: bold;
   font-size: 24px;
   display: flex;
@@ -35,7 +37,7 @@ const StyledTitle = styled.h1`
 `
 
 const FirstP = styled.p`
-  color: #4f4f4f;
+  color: ${({ theme }) => theme.colors.primaryText};
   font-size: 20px;
   max-width: 28rem;
   margin-top: 2rem;
@@ -49,7 +51,7 @@ const SecondP = styled(FirstP)`
 `
 
 const StyledSpan = styled.span`
-  color: #4070ff;
+  color: ${({ theme }) => theme.colors.secondaryText};
   font-size: 14px;
   margin-top: 0.5rem;
   cursor: pointer;
@@ -58,7 +60,8 @@ const StyledSpan = styled.span`
   }
 `
 
-const WelcomeStep = () => {
+const WelcomeStep: FC = () => {
+  const router = useRouter()
   return (
     <StepsBlock>
       <StyledTitle>
@@ -75,10 +78,15 @@ const WelcomeStep = () => {
         Sign up to see if you have friends on Clubhouse who can let you in. We
         can't wait for you to join!
       </SecondP>
-      <Button style={{ marginTop: '1.5rem' }}>
+      <Button
+        style={{ marginTop: '1.5rem' }}
+        onClick={() => router.push('/username')}
+      >
         Get your username <ArrowRightIcon />
       </Button>
-      <StyledSpan>Have an invite key? Sign in</StyledSpan>
+      <StyledSpan onClick={() => router.push('/sign-in')}>
+        Have an invite key? Sign in
+      </StyledSpan>
     </StepsBlock>
   )
 }

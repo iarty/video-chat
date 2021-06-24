@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import reset from 'styled-reset'
 
 export const GlobalStyle = createGlobalStyle`
@@ -12,11 +12,18 @@ export const GlobalStyle = createGlobalStyle`
     height: 100vh;
   }
 `
+const theme = {
+  colors: {
+    primaryText: '#4f4f4f',
+    secondaryText: '#4070ff',
+  },
+}
+
 const Layout = ({ children }: { children: any }) => {
   return (
     <>
       <GlobalStyle />
-      {children}
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </>
   )
 }
