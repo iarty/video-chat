@@ -6,6 +6,7 @@ import Image from 'next/image'
 import memoImg from 'public/static/memo.png'
 import { ArrowRightIcon, TwitterIcon } from 'react-line-awesome'
 import { useRouter } from 'next/router'
+import Avatar from '../Avatar'
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,13 +16,6 @@ const Wrapper = styled.div`
 
 const StyledImage = styled(Image)``
 
-const Avatar = styled.div`
-  background-color: #e5e5e5;
-  border-radius: 34px;
-  font-size: 30px;
-  font-weight: 600;
-  padding: 32px 24px;
-`
 const UserName = styled.span`
   font-size: 24px;
   margin: 10px 0;
