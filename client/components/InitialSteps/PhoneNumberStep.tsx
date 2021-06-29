@@ -6,7 +6,7 @@ import Image from 'next/image'
 import telephoneImg from 'public/static/telephone.png'
 import { ArrowRightIcon } from 'react-line-awesome'
 import { useRouter } from 'next/router'
-import NumberFormat from 'react-number-format'
+import NumberFormat, { NumberFormatValues } from 'react-number-format'
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,9 +41,19 @@ const StyledPhoneInput = styled(NumberFormat)`
   outline: 0;
 `
 
+type InputValueState = {
+  formattedValue: string
+  value: string
+}
+
 const PhoneNumberStep: FC = () => {
   const router = useRouter()
-  const [phoneValue, setPhoneValue] = useState<string>('')
+  const [phoneValue, setPhoneValue] = useState<InputValueState>(
+    {} as InputValueState,
+  )
+
+  const isDisabled =
+    !phoneValue.formattedValue || phoneValue.formattedValue.includes('_')
 
   return (
     <Wrapper>
@@ -55,10 +65,15 @@ const PhoneNumberStep: FC = () => {
           format="+(###) ###-###-###"
           mask="_"
           placeholder="+ (996) 555-555-555"
+          onValueChange={({ formattedValue, value }: NumberFormatValues) =>
+            setPhoneValue({ formattedValue, value })
+          }
+          value={phoneValue.value}
         />
         <Button
           style={{ marginTop: '1.5rem' }}
           onClick={() => router.push('/username')}
+          disabled={isDisabled}
         >
           Next <ArrowRightIcon />
         </Button>
