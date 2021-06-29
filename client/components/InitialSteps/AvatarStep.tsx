@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, ChangeEvent, useState } from 'react'
+import { FC, useRef, useEffect, useState, ChangeEvent } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import Avatar from '../Avatar'
@@ -79,7 +79,7 @@ const AvatarStep: FC = () => {
           <input
             id="avatar"
             type="file"
-            onChange={e => handleChangeAvatar(e)}
+            onChange={(e: any) => handleChangeAvatar(e)}
             ref={inputRef}
             hidden
           />
