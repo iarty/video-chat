@@ -1,40 +1,10 @@
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
-import styled, { keyframes } from 'styled-components'
-import Image from 'next/image'
-import handImg from 'public/static/hand.png'
+import styled from 'styled-components'
 import { ArrowRightIcon } from 'react-line-awesome'
-import { useRouter } from 'next/router'
-
-const rotate = keyframes`
-  0% { transform: rotate(0deg); }
-  5% { transform: rotate(15deg); }
-  10% { transform: rotate(-15deg); }
-  15% { transform: rotate(15deg); }
-  20% { transform: rotate(-15deg); }
-  25% { transform: rotate(15deg); }
-  30% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
-`
-const Shake = styled.div`
-  display: inline-block;
-  margin-right: 10px;
-  animation: ${rotate} 3s ease-in-out 2s infinite;
-  animation-duration: 5s;
-  transform-origin: 50% 100%;
-`
-
-const StyledImage = styled(Image)`
-  margin-right: 10px;
-`
-
-const StyledTitle = styled.h2`
-  font-weight: bold;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-`
+import { MainContext } from 'pages'
+import Logo from 'components/Logo'
 
 const FirstP = styled.p`
   color: ${({ theme }) => theme.colors.primaryText};
@@ -61,15 +31,10 @@ const StyledSpan = styled.span`
 `
 
 const WelcomeStep: FC = () => {
-  const router = useRouter()
+  const { onNextStep } = useContext(MainContext)
   return (
     <StepsBlock>
-      <StyledTitle>
-        <Shake>
-          <StyledImage src={handImg} alt="Hand" width={40} height={40} />
-        </Shake>
-        Clubhouse
-      </StyledTitle>
+      <Logo />
       <FirstP>
         Hey, we're still opening up but anyone can join with an invite from an
         existing user!
@@ -78,15 +43,10 @@ const WelcomeStep: FC = () => {
         Sign up to see if you have friends on Clubhouse who can let you in. We
         can't wait for you to join!
       </SecondP>
-      <Button
-        style={{ marginTop: '1.5rem' }}
-        onClick={() => router.push('/username')}
-      >
+      <Button style={{ marginTop: '1.5rem' }} onClick={() => onNextStep(2)}>
         Get your username <ArrowRightIcon />
       </Button>
-      <StyledSpan onClick={() => router.push('/sign-in')}>
-        Have an invite key? Sign in
-      </StyledSpan>
+      <StyledSpan>Have an invite key? Sign in</StyledSpan>
     </StepsBlock>
   )
 }
