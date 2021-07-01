@@ -1,12 +1,12 @@
-import { FC, useState } from 'react'
+import { FC, useState, useContext } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
 import Image from 'next/image'
 import telephoneImg from 'public/static/telephone.png'
 import { ArrowRightIcon } from 'react-line-awesome'
-import { useRouter } from 'next/router'
 import NumberFormat, { NumberFormatValues } from 'react-number-format'
+import { MainContext } from 'pages'
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,7 +47,8 @@ type InputValueState = {
 }
 
 const PhoneNumberStep: FC = () => {
-  const router = useRouter()
+  const { onNextStep } = useContext(MainContext)
+
   const [phoneValue, setPhoneValue] = useState<InputValueState>(
     {} as InputValueState,
   )
@@ -72,7 +73,7 @@ const PhoneNumberStep: FC = () => {
         />
         <Button
           style={{ marginTop: '1.5rem' }}
-          onClick={() => router.push('/username')}
+          onClick={() => onNextStep(6)}
           disabled={isDisabled}
         >
           Next <ArrowRightIcon />
