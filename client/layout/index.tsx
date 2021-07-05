@@ -1,6 +1,7 @@
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 import reset from 'styled-reset'
 import Navbar from 'components/Navbar'
+import { useRouter } from 'next/router'
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -25,10 +26,13 @@ const ChildWrapper = styled.div`
 `
 
 const Layout = ({ children }: { children: any }) => {
+  const router = useRouter()
+  const isShow = router.pathname !== '/'
+
   return (
     <>
       <GlobalStyle />
-      <Navbar />
+      <Navbar show={isShow} />
       <ThemeProvider theme={theme}>
         <ChildWrapper>{children}</ChildWrapper>
       </ThemeProvider>
