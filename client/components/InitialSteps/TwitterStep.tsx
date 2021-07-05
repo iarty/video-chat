@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
 import Image from 'next/image'
 import memoImg from 'public/static/memo.png'
 import { ArrowRightIcon, TwitterIcon } from 'react-line-awesome'
-import { useRouter } from 'next/router'
 import Avatar from '../Avatar'
+import { MainContext } from 'pages'
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,7 +31,8 @@ const StyledTitle = styled.h2`
 `
 
 const TwitterStep: FC = () => {
-  const router = useRouter()
+  const { onNextStep } = useContext(MainContext)
+
   return (
     <Wrapper>
       <StyledImage src={memoImg} alt="Twitter" width={40} height={40} />
@@ -39,10 +40,7 @@ const TwitterStep: FC = () => {
       <StepsBlock>
         <Avatar>AB</Avatar>
         <UserName>Barbonov Artem</UserName>
-        <Button
-          style={{ marginTop: '1.5rem' }}
-          onClick={() => router.push('/username')}
-        >
+        <Button style={{ marginTop: '1.5rem' }} onClick={() => onNextStep(4)}>
           <TwitterIcon /> Import from Twitter <ArrowRightIcon />
         </Button>
       </StepsBlock>

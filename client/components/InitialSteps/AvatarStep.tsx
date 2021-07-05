@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, useState, ChangeEvent } from 'react'
+import { FC, useRef, useEffect, useState, useContext } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import Avatar from '../Avatar'
@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Image from 'next/image'
 import congratulationsImg from 'public/static/congratulations.png'
 import { ArrowRightIcon } from 'react-line-awesome'
-import { useRouter } from 'next/router'
+import { MainContext } from 'pages'
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,7 +39,8 @@ const StyledLabel = styled.label`
 
 const AvatarStep: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
+  const { onNextStep } = useContext(MainContext)
+
   const [avatarUrl, setAvatarUrl] = useState<string>('')
 
   const handleChangeAvatar = (e: Event) => {
@@ -84,10 +85,7 @@ const AvatarStep: FC = () => {
             hidden
           />
         </StyledLabel>
-        <Button
-          style={{ marginTop: '1.5rem' }}
-          onClick={() => router.push('/username')}
-        >
+        <Button style={{ marginTop: '1.5rem' }} onClick={() => onNextStep(5)}>
           Next <ArrowRightIcon />
         </Button>
       </StepsBlock>

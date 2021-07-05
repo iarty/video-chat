@@ -1,11 +1,11 @@
-import { FC } from 'react'
+import { ChangeEvent, FC, useContext, useState } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
 import Image from 'next/image'
 import broodyImg from 'public/static/broody.png'
 import { ArrowRightIcon } from 'react-line-awesome'
-import { useRouter } from 'next/router'
+import { MainContext } from 'pages'
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,7 +42,13 @@ const Input = styled.input`
 `
 
 const EnterNameStep: FC = () => {
-  const router = useRouter()
+  const { onNextStep } = useContext(MainContext)
+  const [userName, setUserName] = useState<string>('')
+  const isDisabled = !userName.length
+
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) =>
+    setUserName(e.target.value)
+
   return (
     <Wrapper>
       <StyledImage src={broodyImg} alt="Hand" width={40} height={40} />
@@ -51,10 +57,16 @@ const EnterNameStep: FC = () => {
         People use real names on Clubhouse :) Thnx!
       </StyledSubTitle>
       <StepsBlock>
-        <Input type="text" placeholder="Enter Fullname" />
+        <Input
+          type="text"
+          placeholder="Enter Fullname"
+          value={userName}
+          onChange={handleChangeInput}
+        />
         <Button
           style={{ marginTop: '1.5rem' }}
-          onClick={() => router.push('/username')}
+          onClick={() => onNextStep(3)}
+          disabled={isDisabled}
         >
           Next <ArrowRightIcon />
         </Button>
