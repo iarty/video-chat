@@ -25,7 +25,7 @@ const StyledImage = styled(Image)`
   margin-right: 10px;
 `
 
-const StyledTitle = styled.h2`
+const StyledTitle = styled.div`
   font-weight: bold;
   font-size: 24px;
   display: flex;

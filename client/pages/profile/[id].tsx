@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { ArrowLeftIcon } from 'react-line-awesome'
+import { ArrowLeftIcon, EllipsisVIcon } from 'react-line-awesome'
 import { useRouter } from 'next/router'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/Button'
@@ -16,7 +16,7 @@ const BackWrapper = styled.div`
   color: ${({ theme }) => theme.colors.primaryText};
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   cursor: pointer;
   &:hover {
     opacity: 0.8;
@@ -26,6 +26,7 @@ const BackWrapper = styled.div`
 const UserInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 `
 const AvatarBlock = styled.div`
   display: flex;
@@ -42,7 +43,7 @@ const AvatarBlock = styled.div`
     p:last-child {
       font-size: 14px;
       margin-top: 5px;
-      color: ${({ theme }) => theme.colors.primaryText};
+      color: #969696;
       opacity: 0.7;
     }
   }
@@ -70,7 +71,42 @@ const FollowInner = styled.div`
   }
 `
 
-const ProfilePage: FC = () => {
+const UserDescriptionWrapper = styled.div`
+  font-size: 1.125rem;
+  margin-top: 2rem;
+  line-height: 1.875rem;
+`
+
+const OutlinedButton = styled(Button)`
+  background-color: transparent;
+  border: 1px solid #6881e7;
+  color: #6881e7;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  &:hover {
+    background-color: #6881e7;
+    color: #fff;
+  }
+`
+
+const StyledEllipsis = styled(EllipsisVIcon)`
+  font-size: 24px;
+  color: #969696;
+  cursor: pointer;
+`
+interface IProfileProps {
+  fullname: string
+  username: string
+  avatarUrl: string
+  about: string
+}
+
+const ProfilePage: FC<IProfileProps> = ({
+  fullname,
+  username,
+  avatarUrl,
+  about,
+}) => {
   const router = useRouter()
 
   return (
@@ -81,12 +117,13 @@ const ProfilePage: FC = () => {
       <div>
         <UserInfoWrapper>
           <AvatarBlock>
-            <Avatar url="https://image.flaticon.com/icons/png/512/147/147144.png" />
+            <Avatar url={avatarUrl} width="100px" height="100px" />
             <div>
-              <p>Barbonov Artem </p>
-              <p>@abarbonov</p>
+              <p>{fullname}</p>
+              <p>@{username}</p>
             </div>
-            <Button>Follow</Button>
+            <OutlinedButton>Follow</OutlinedButton>
+            <StyledEllipsis />
           </AvatarBlock>
           <FollowersWrapper>
             <FollowInner>
@@ -99,7 +136,7 @@ const ProfilePage: FC = () => {
             </FollowInner>
           </FollowersWrapper>
         </UserInfoWrapper>
-        <div>Description</div>
+        <UserDescriptionWrapper>{about}</UserDescriptionWrapper>
       </div>
     </ProfilePageWrapper>
   )
