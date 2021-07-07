@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, FC, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
@@ -51,12 +51,11 @@ const EnterActivateCodeStep: FC = () => {
   const router = useRouter()
   const [codeValue, setCodeValue] = useState<Array<string>>(['', '', '', ''])
   const [loading, setLoading] = useState<boolean>(false)
-
   const isDisabled = codeValue.some(el => !el)
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const el = e.target as HTMLInputElement
-    const index = Number(el.getAttribute('id')) - 1
+    const index = Number(el.getAttribute('id'))
     const value = el.value
 
     setCodeValue(prev => {
@@ -64,18 +63,20 @@ const EnterActivateCodeStep: FC = () => {
       arr[index] = value
       return arr
     })
+
+    el.nextSibling && !codeValue[index + 1] && el.nextSibling.focus()
   }
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    const el = e.target as HTMLInputElement
-    const index = Number(el.getAttribute('id')) - 1
-
-    if (e.key === 'Backspace') {
-      el.previousSibling && el.previousSibling.focus()
-    } else if (e.key !== 'Backspace' && !codeValue[index + 1]) {
-      el.nextSibling && codeValue[index] && el.nextSibling.focus()
-    }
-  }
+  // const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+  //   const el = e.target as HTMLInputElement
+  //   const index = Number(el.getAttribute('id'))
+  //   if (e.key === 'Backspace') {
+  //     el.previousSibling && el.previousSibling.focus()
+  //   } else if (e.key !== 'Backspace') {
+  //     console.log(controls.current[index + 1].focus)
+  //     el.nextSibling && controls.current[index + 1].focus()
+  //   }
+  // }
 
   const onSubmit = async () => {
     try {
@@ -83,7 +84,6 @@ const EnterActivateCodeStep: FC = () => {
       await apiV1.get('https://jsonplaceholder.typicode.com/todos')
       router.push('/rooms')
     } catch (error) {
-      console.log(error)
       setLoading(false)
     }
   }
@@ -98,42 +98,17 @@ const EnterActivateCodeStep: FC = () => {
           <StyledTitle>Enter your activate code</StyledTitle>
           <StepsBlock>
             <div>
-              <StyledCodeInput
-                type="tel"
-                placeholder="X"
-                maxLength={1}
-                id="1"
-                onChange={handleChangeInput}
-                onKeyUp={handleKeyPress}
-                value={codeValue[0]}
-              />
-              <StyledCodeInput
-                type="tel"
-                placeholder="X"
-                maxLength={1}
-                id="2"
-                onChange={handleChangeInput}
-                onKeyUp={handleKeyPress}
-                value={codeValue[1]}
-              />
-              <StyledCodeInput
-                type="tel"
-                placeholder="X"
-                maxLength={1}
-                id="3"
-                onChange={handleChangeInput}
-                onKeyUp={handleKeyPress}
-                value={codeValue[2]}
-              />
-              <StyledCodeInput
-                type="tel"
-                placeholder="X"
-                maxLength={1}
-                id="4"
-                onChange={handleChangeInput}
-                onKeyUp={handleKeyPress}
-                value={codeValue[3]}
-              />
+              {codeValue.map((code, index) => (
+                <StyledCodeInput
+                  key={code + index}
+                  type="tel"
+                  placeholder="X"
+                  maxLength={1}
+                  id={String(index)}
+                  onChange={handleChangeInput}
+                  value={code}
+                />
+              ))}
             </div>
             <Button
               style={{ marginTop: '1.5rem' }}
