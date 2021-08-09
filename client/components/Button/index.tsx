@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components'
 
-const Button = styled.button`
+const Button = styled.button<{ color: string }>`
   padding: 10px 20px;
   color: #fff;
-  background-color: #6881e7;
+  background-color: ${({ color, theme }) => {
+    return color ? color : theme.colors.primaryButtonColor
+  }};
   font-size: 0.9333rem;
   line-height: 1.3333rem;
   border-radius: 40px;

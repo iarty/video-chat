@@ -1,26 +1,15 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { ArrowLeftIcon, EllipsisVIcon } from 'react-line-awesome'
-import { useRouter } from 'next/router'
+import { EllipsisVIcon } from 'react-line-awesome'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/Button'
+import BackButton from '@/components/BackButton'
 
 const ProfilePageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 90%;
-  height: 80vh;
-`
-
-const BackWrapper = styled.div`
-  color: ${({ theme }) => theme.colors.primaryText};
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-  }
+  width: 100%;
+  height: 100%;
 `
 
 const UserInfoWrapper = styled.div`
@@ -28,6 +17,7 @@ const UserInfoWrapper = styled.div`
   justify-content: space-between;
   align-items: flex-start;
 `
+
 const AvatarBlock = styled.div`
   display: flex;
   justify-content: space-between;
@@ -107,13 +97,9 @@ const ProfilePage: FC<IProfileProps> = ({
   avatarUrl,
   about,
 }) => {
-  const router = useRouter()
-
   return (
     <ProfilePageWrapper>
-      <BackWrapper onClick={() => router.back()}>
-        <ArrowLeftIcon /> Back
-      </BackWrapper>
+      <BackButton container={false} title="Back" />
       <div>
         <UserInfoWrapper>
           <AvatarBlock>
