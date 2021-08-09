@@ -8,6 +8,7 @@ const NavbarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 1.25rem 3.125rem;
+  border-bottom: 2px solid #ede1c7;
 `
 
 const UsernameWrapper = styled.div`
@@ -20,6 +21,7 @@ const Username = styled.p`
   font-weight: bold;
   margin-right: 0.625rem;
 `
+
 const Navbar: FC<{ show: boolean }> = ({ show }) => {
   return (
     <NavbarWrapper>
