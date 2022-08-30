@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import styled from 'styled-components'
 import { EllipsisVIcon, HandPeaceIcon } from 'react-line-awesome'
 import { useRouter } from 'next/router'
@@ -6,6 +5,7 @@ import Button from 'components/Button'
 import User from 'components/User'
 import Link from 'next/link'
 import BackButton from '../BackButton'
+import { NextPage } from 'next'
 
 const RoomsPageWrap = styled.div`
   display: flex;
@@ -113,10 +113,9 @@ interface IRoomsProps {
   users: string[]
 }
 
-const RoomPage: FC<IRoomsProps> = ({ title, users = [1] }) => {
+const RoomPage: NextPage<IRoomsProps> = ({ title, users = [1] }) => {
   const router = useRouter()
   const { id } = router.query
-
   return (
     <RoomsPageWrap>
       <BackButton container href="/rooms" title="All rooms" />
@@ -136,7 +135,7 @@ const RoomPage: FC<IRoomsProps> = ({ title, users = [1] }) => {
         </RoomTitleWrap>
         <div>
           {users.map((data, i) => (
-            <User key={i} {...data} />
+            <User key={i} name={data as string} />
           ))}
         </div>
       </RoomsPageInner>

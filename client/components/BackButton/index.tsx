@@ -15,7 +15,6 @@ const StyledLink = styled.a<{ container?: boolean }>`
     opacity: 0.8;
   }
   ${({ container }) => {
-    console.log(container)
     return (
       container &&
       css`

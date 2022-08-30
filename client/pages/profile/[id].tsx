@@ -1,9 +1,9 @@
-import { FC } from 'react'
 import styled from 'styled-components'
 import { EllipsisVIcon } from 'react-line-awesome'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/Button'
 import BackButton from '@/components/BackButton'
+import { NextPage } from 'next'
 
 const ProfilePageWrapper = styled.div`
   display: flex;
@@ -91,7 +91,7 @@ interface IProfileProps {
   about: string
 }
 
-const ProfilePage: FC<IProfileProps> = ({
+const ProfilePage: NextPage<IProfileProps> = ({
   fullname,
   username,
   avatarUrl,

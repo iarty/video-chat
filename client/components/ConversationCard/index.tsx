@@ -1,7 +1,8 @@
-import { FC } from 'react'
 import Avatar from '../Avatar'
 import { UserAltIcon, CommentDotsIcon, CommentIcon } from 'react-line-awesome'
 import styled from 'styled-components'
+import { IConversationCard } from '../../models/room'
+import { NextPage } from 'next'
 
 const CardsBlock = styled.div`
   background-color: #fff;
@@ -40,6 +41,8 @@ const CardInner = styled.div`
     margin-left: 1.875rem;
     font-size: 14px;
     ul:nth-of-type(1) {
+      height: 80px;
+      overflow: hidden;
       margin-bottom: 0.9375rem;
       li {
         margin-bottom: 5px;
@@ -55,15 +58,7 @@ const CardInner = styled.div`
   }
 `
 
-interface IConversationCard {
-  title: string
-  guests: string[]
-  avatars: string[]
-  guestsCount: number
-  speakersCount: number
-}
-
-const ConversationCard: FC<IConversationCard> = ({
+const ConversationCard: NextPage<IConversationCard> = ({
   title,
   guests = [],
   avatars = [],

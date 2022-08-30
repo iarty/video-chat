@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useContext, useState } from 'react'
+import { ChangeEvent, memo, useContext, useState } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
@@ -6,6 +6,7 @@ import Image from 'next/image'
 import broodyImg from 'public/static/broody.png'
 import { ArrowRightIcon } from 'react-line-awesome'
 import { MainContext } from 'pages'
+import { NextPage } from 'next'
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,13 +42,19 @@ const Input = styled.input`
   outline: 0;
 `
 
-const EnterNameStep: FC = () => {
-  const { onNextStep } = useContext(MainContext)
-  const [userName, setUserName] = useState<string>('')
-  const isDisabled = !userName.length
+const EnterNameStep: NextPage = memo(function EnterNameStep() {
+  const { onNextStep, userData, setFieldValueHelper } = useContext(MainContext)
+  const [inputValue, setInputValue] = useState<string>(userData?.fullname || '')
+  const isDisabled = !inputValue.length
 
-  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) =>
-    setUserName(e.target.value)
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
+  }
+
+  const nextStepHandler = () => {
+    setFieldValueHelper('fullname', inputValue)
+    onNextStep(4)
+  }
 
   return (
     <Wrapper>
@@ -60,12 +67,13 @@ const EnterNameStep: FC = () => {
         <Input
           type="text"
           placeholder="Enter Fullname"
-          value={userName}
+          name="fullname"
+          value={inputValue}
           onChange={handleChangeInput}
         />
         <Button
           style={{ marginTop: '1.5rem' }}
-          onClick={() => onNextStep(3)}
+          onClick={nextStepHandler}
           disabled={isDisabled}
         >
           Next <ArrowRightIcon />
@@ -73,6 +81,6 @@ const EnterNameStep: FC = () => {
       </StepsBlock>
     </Wrapper>
   )
-}
+})
 
 export default EnterNameStep

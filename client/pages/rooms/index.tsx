@@ -4,6 +4,9 @@ import Button from 'components/Button'
 import { CompactDiscIcon, PlusIcon } from 'react-line-awesome'
 import ConversationCard from '@/components/ConversationCard'
 import Link from 'next/link'
+// import { apiV1 } from '../../core/request'
+import { IConversationCard } from '../../models/room'
+import axios from 'axios'
 
 const RoomsPageWrapper = styled.div`
   display: flex;
@@ -25,8 +28,12 @@ const RoomsTitleInner = styled(RoomsTitleWrap)`
     font-weight: bold;
   }
 `
-const CardWrap = styled.div`
-  display: flex;
+const CardsWrap = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  //grid-template-columns: repeat(4, minmax(300px, 1fr));
+  gap: 1rem;
+  grid-gap: 1rem;
   margin-top: 2rem;
 `
 const StyledLink = styled.a`
@@ -34,7 +41,11 @@ const StyledLink = styled.a`
   text-decoration: none;
 `
 
-const Rooms: FC = () => {
+interface IProps {
+  rooms: IConversationCard[]
+}
+
+const Rooms: FC<IProps> = ({ rooms }) => {
   return (
     <RoomsPageWrapper>
       <RoomsTitleWrap>
@@ -49,24 +60,39 @@ const Rooms: FC = () => {
           <PlusIcon /> Start room
         </Button>
       </RoomsTitleWrap>
-      <CardWrap>
-        <Link href="/rooms/test" passHref>
-          <StyledLink>
-            <ConversationCard
-              title="Create clubhouse clone"
-              avatars={[
-                'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
-                'https://www.monteirolobato.edu.br/public/assets/admin/images/avatars/avatar1_big.png',
-              ]}
-              guests={['Artem Barbonov', 'Vasya Pupkin', 'Ivan Ivanov']}
-              guestsCount={44}
-              speakersCount={3}
-            />
-          </StyledLink>
-        </Link>
-      </CardWrap>
+      <CardsWrap>
+        {rooms.map(room => (
+          <Link key={room.id} href={`/rooms/${room.id}`} passHref>
+            <StyledLink>
+              <ConversationCard
+                id={room.id}
+                title={room.title}
+                avatars={room.avatars}
+                guests={room.guests}
+                guestsCount={room.guestsCount}
+                speakersCount={room.speakersCount}
+              />
+            </StyledLink>
+          </Link>
+        ))}
+      </CardsWrap>
     </RoomsPageWrapper>
   )
+}
+
+export const getServerSideProps = async () => {
+  try {
+    const { data } = await axios.get<Array<IConversationCard>>(
+      'http://localhost:3000/rooms.json',
+    )
+    return {
+      props: {
+        rooms: data,
+      },
+    }
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 export default Rooms

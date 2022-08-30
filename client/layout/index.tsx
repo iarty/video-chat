@@ -15,6 +15,7 @@ export const GlobalStyle = createGlobalStyle`
 
   }
 `
+
 const theme = {
   colors: {
     primaryText: '#4f4f4f',

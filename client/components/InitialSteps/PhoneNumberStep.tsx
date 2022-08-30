@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react'
+import { useState, useContext, memo } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
@@ -7,6 +7,9 @@ import telephoneImg from 'public/static/telephone.png'
 import { ArrowRightIcon } from 'react-line-awesome'
 import NumberFormat, { NumberFormatValues } from 'react-number-format'
 import { MainContext } from 'pages'
+import { NextPage } from 'next'
+import { AxiosResponse } from 'axios'
+import { apiV1 } from '../../core/request'
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,15 +49,29 @@ type InputValueState = {
   value: string
 }
 
-const PhoneNumberStep: FC = () => {
-  const { onNextStep } = useContext(MainContext)
+const sendPhone = async (
+  phone: string,
+  id?: number,
+): Promise<AxiosResponse> => {
+  return await apiV1.post('/auth/phone', { phone, id })
+}
+
+const PhoneNumberStep: NextPage = memo(function PhoneNumberStep() {
+  const { onNextStep, setFieldValueHelper, userData } = useContext(MainContext)
 
   const [phoneValue, setPhoneValue] = useState<InputValueState>(
     {} as InputValueState,
   )
-
   const isDisabled =
     !phoneValue.formattedValue || phoneValue.formattedValue.includes('_')
+
+  const nextStepHandler = async () => {
+    setFieldValueHelper('phone', phoneValue.value)
+    console.log(userData)
+    const { data } = await sendPhone(phoneValue.value, userData?.id)
+    console.log(data)
+    // onNextStep(6)
+  }
 
   return (
     <Wrapper>
@@ -73,7 +90,7 @@ const PhoneNumberStep: FC = () => {
         />
         <Button
           style={{ marginTop: '1.5rem' }}
-          onClick={() => onNextStep(6)}
+          onClick={nextStepHandler}
           disabled={isDisabled}
         >
           Next <ArrowRightIcon />
@@ -81,6 +98,6 @@ const PhoneNumberStep: FC = () => {
       </StepsBlock>
     </Wrapper>
   )
-}
+})
 
 export default PhoneNumberStep

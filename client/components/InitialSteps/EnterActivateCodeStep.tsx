@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, memo, useState } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
@@ -8,6 +8,7 @@ import { ArrowRightIcon } from 'react-line-awesome'
 import { useRouter } from 'next/router'
 import Preloader from 'components/Preloader'
 import { apiV1 } from 'core/request'
+import { NextPage } from 'next'
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,7 +48,7 @@ const StyledCodeInput = styled.input`
   text-align: center;
 `
 
-const EnterActivateCodeStep: FC = () => {
+const EnterActivateCodeStep: NextPage = memo(function EnterActivateCodeStep() {
   const router = useRouter()
   const [codeValue, setCodeValue] = useState<Array<string>>(['', '', '', ''])
   const [loading, setLoading] = useState<boolean>(false)
@@ -57,6 +58,7 @@ const EnterActivateCodeStep: FC = () => {
     const el = e.target as HTMLInputElement
     const index = Number(el.getAttribute('id'))
     const value = el.value
+    const nextSibling = el.nextSibling as HTMLElement
 
     setCodeValue(prev => {
       const arr = [...prev]
@@ -64,7 +66,7 @@ const EnterActivateCodeStep: FC = () => {
       return arr
     })
 
-    el.nextSibling && !codeValue[index + 1] && el.nextSibling.focus()
+    nextSibling && !codeValue[index + 1] && nextSibling.focus()
   }
 
   // const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -118,6 +120,7 @@ const EnterActivateCodeStep: FC = () => {
               Next <ArrowRightIcon />
             </Button>
             <StyledSubTitle>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               By entering your number, you're agreeing to our Terms of Service
               and Privacy Policy. Thanks!
             </StyledSubTitle>
@@ -126,6 +129,6 @@ const EnterActivateCodeStep: FC = () => {
       )}
     </Wrapper>
   )
-}
+})
 
 export default EnterActivateCodeStep

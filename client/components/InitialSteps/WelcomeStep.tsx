@@ -1,10 +1,11 @@
-import { FC, useContext } from 'react'
+import { memo, useContext } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
 import { ArrowRightIcon } from 'react-line-awesome'
 import { MainContext } from 'pages'
 import Logo from 'components/Logo'
+import { NextPage } from 'next'
 
 const FirstP = styled.p`
   color: ${({ theme }) => theme.colors.primaryText};
@@ -30,7 +31,7 @@ const StyledSpan = styled.span`
   }
 `
 
-const WelcomeStep: FC = () => {
+const WelcomeStep: NextPage = memo(function WelcomeStep() {
   const { onNextStep } = useContext(MainContext)
   return (
     <StepsBlock>
@@ -44,11 +45,11 @@ const WelcomeStep: FC = () => {
         can't wait for you to join!
       </SecondP>
       <Button style={{ marginTop: '1.5rem' }} onClick={() => onNextStep(2)}>
-        Get your username <ArrowRightIcon />
+        Get start <ArrowRightIcon />
       </Button>
       <StyledSpan>Have an invite key? Sign in</StyledSpan>
     </StepsBlock>
   )
-}
+})
 
 export default WelcomeStep
