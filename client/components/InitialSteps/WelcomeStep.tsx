@@ -41,8 +41,8 @@ const WelcomeStep: NextPage = memo(function WelcomeStep() {
         existing user!
       </FirstP>
       <SecondP>
-        Sign up to see if you have friends on Clubhouse who can let you in. We
-        can't wait for you to join!
+        Sign up to see if you have friends on our VideoChat who can let you in.
+        We can't wait for you to join!
       </SecondP>
       <Button style={{ marginTop: '1.5rem' }} onClick={() => onNextStep(2)}>
         Get start <ArrowRightIcon />

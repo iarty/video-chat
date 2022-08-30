@@ -60,7 +60,7 @@ const InitialPage: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Clubhouse Clone</title>
+        <title>VideoChat</title>
       </Head>
       <main>
         <MainContext.Provider

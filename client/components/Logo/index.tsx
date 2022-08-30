@@ -38,7 +38,7 @@ const Logo: FC = () => {
       <Shake>
         <StyledImage src={handImg} alt="Hand" width={40} height={40} />
       </Shake>
-      Clubhouse
+      VideoChat
     </StyledTitle>
   )
 }

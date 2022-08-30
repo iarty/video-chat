@@ -61,7 +61,7 @@ const EnterNameStep: NextPage = memo(function EnterNameStep() {
       <StyledImage src={broodyImg} alt="Hand" width={40} height={40} />
       <StyledTitle>What's your full name?</StyledTitle>
       <StyledSubTitle>
-        People use real names on Clubhouse :) Thnx!
+        People use real names on our VideoChat :) Thnx!
       </StyledSubTitle>
       <StepsBlock>
         <Input
