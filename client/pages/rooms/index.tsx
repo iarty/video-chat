@@ -3,10 +3,9 @@ import Button from 'components/Button'
 import { CompactDiscIcon, PlusIcon } from 'react-line-awesome'
 import ConversationCard from '@/components/ConversationCard'
 import Link from 'next/link'
-// import { apiV1 } from '../../core/request'
+
 import { IConversationCard } from '../../models/room'
-import axios from 'axios'
-import { NextPage } from 'next'
+import { NextApiRequest, NextApiResponse, NextPage } from 'next'
 
 const RoomsPageWrapper = styled.div`
   display: flex;
@@ -80,14 +79,17 @@ const Rooms: NextPage<IProps> = ({ rooms }) => {
   )
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async ({
+  req,
+  res,
+}: {
+  req: NextApiRequest
+  res: NextApiResponse
+}) => {
   try {
-    const { data } = await axios.get<Array<IConversationCard>>(
-      'http://localhost:3000/rooms.json',
-    )
     return {
       props: {
-        rooms: data,
+        rooms: [],
       },
     }
   } catch (e) {

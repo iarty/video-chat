@@ -64,6 +64,14 @@ const AvatarStep: NextPage = memo(function AvatarStep() {
     }
   }
 
+  const defaultAvatarValue = (fullname: string | undefined): string => {
+    if (!fullname) return ''
+    return fullname
+      .split(' ')
+      .map(s => s[0])
+      .join('')
+  }
+
   return (
     <Wrapper>
       <StyledImage
@@ -76,7 +84,9 @@ const AvatarStep: NextPage = memo(function AvatarStep() {
       {/* eslint-disable-next-line react/no-unescaped-entities */}
       <StyledSubTitle>How's this photo?</StyledSubTitle>
       <StepsBlock>
-        <Avatar url={avatarUrl}>AB</Avatar>
+        <Avatar url={avatarUrl}>
+          {defaultAvatarValue(userData?.fullname)}
+        </Avatar>
         <StyledLabel htmlFor="avatar">
           Choose a different photo
           <input

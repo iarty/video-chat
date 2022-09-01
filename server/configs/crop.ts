@@ -18,6 +18,7 @@ export const cropMiddleware = (req, res, next) => {
   const imageName = req.file.filename.split(".")[0];
   const imageFormat = path.extname(req.file.filename);
   const arrPromise = [];
+
   Object.keys(options).forEach((option) => {
     const outputImage = folder + "/" + imageName + `-${option}` + imageFormat;
     arrPromise.push(
