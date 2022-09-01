@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useState } from 'react'
+import { ChangeEvent, memo, useContext, useState } from 'react'
 import StepsBlock from '../StepsBlock'
 import Button from '../Button'
 import styled from 'styled-components'
@@ -9,6 +9,8 @@ import { useRouter } from 'next/router'
 import Preloader from 'components/Preloader'
 import { apiV1 } from 'core/request'
 import { NextPage } from 'next'
+import { MainContext } from '../../pages'
+import { AxiosResponse } from 'axios'
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,43 +50,27 @@ const StyledCodeInput = styled.input`
   text-align: center;
 `
 
+const clearCode = async (id: number): Promise<AxiosResponse> => {
+  return await apiV1.delete(`/auth/clear/${id}`)
+}
+
 const EnterActivateCodeStep: NextPage = memo(function EnterActivateCodeStep() {
   const router = useRouter()
-  const [codeValue, setCodeValue] = useState<Array<string>>(['', '', '', ''])
+  const { smsCode } = useContext(MainContext)
+  const [codeValue] = useState<Array<string>>(
+    smsCode?.code.split('') || ['', '', '', ''],
+  )
   const [loading, setLoading] = useState<boolean>(false)
   const isDisabled = codeValue.some(el => !el)
-
-  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const el = e.target as HTMLInputElement
-    const index = Number(el.getAttribute('id'))
-    const value = el.value
-    const nextSibling = el.nextSibling as HTMLElement
-
-    setCodeValue(prev => {
-      const arr = [...prev]
-      arr[index] = value
-      return arr
-    })
-
-    nextSibling && !codeValue[index + 1] && nextSibling.focus()
-  }
-
-  // const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-  //   const el = e.target as HTMLInputElement
-  //   const index = Number(el.getAttribute('id'))
-  //   if (e.key === 'Backspace') {
-  //     el.previousSibling && el.previousSibling.focus()
-  //   } else if (e.key !== 'Backspace') {
-  //     console.log(controls.current[index + 1].focus)
-  //     el.nextSibling && controls.current[index + 1].focus()
-  //   }
-  // }
 
   const onSubmit = async () => {
     try {
       setLoading(true)
+      if (smsCode?.id) {
+        await clearCode(smsCode.id)
+      }
       await apiV1.get('https://jsonplaceholder.typicode.com/todos')
-      router.push('/rooms')
+      await router.push('/rooms')
     } catch (error) {
       setLoading(false)
     }
@@ -107,8 +93,8 @@ const EnterActivateCodeStep: NextPage = memo(function EnterActivateCodeStep() {
                   placeholder="X"
                   maxLength={1}
                   id={String(index)}
-                  onChange={handleChangeInput}
                   value={code}
+                  disabled
                 />
               ))}
             </div>

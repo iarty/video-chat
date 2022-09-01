@@ -15,6 +15,7 @@
     "@types/passport": "^1.0.10",
     "@types/passport-github2": "^1.2.5",
     "@types/passport-google-oauth": "^1.0.42",
+    "@types/passport-jwt": "^3.0.6",
     "@types/sharp": "^0.30.5",
     "@types/winston": "^2.4.4",
     "bcrypt": "^5.0.1",

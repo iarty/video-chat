@@ -49,15 +49,13 @@ type InputValueState = {
   value: string
 }
 
-const sendPhone = async (
-  phone: string,
-  id?: number,
-): Promise<AxiosResponse> => {
-  return await apiV1.post('/auth/phone', { phone, id })
+const sendPhone = async (phone: string): Promise<AxiosResponse> => {
+  return await apiV1.post('/auth/phone', { phone })
 }
 
 const PhoneNumberStep: NextPage = memo(function PhoneNumberStep() {
-  const { onNextStep, setFieldValueHelper, userData } = useContext(MainContext)
+  const { onNextStep, setFieldValueHelper, setSmsCode } =
+    useContext(MainContext)
 
   const [phoneValue, setPhoneValue] = useState<InputValueState>(
     {} as InputValueState,
@@ -67,10 +65,15 @@ const PhoneNumberStep: NextPage = memo(function PhoneNumberStep() {
 
   const nextStepHandler = async () => {
     setFieldValueHelper('phone', phoneValue.value)
-    console.log(userData)
-    const { data } = await sendPhone(phoneValue.value, userData?.id)
-    console.log(data)
-    // onNextStep(6)
+    const {
+      data: { id, user_id, code },
+    } = await sendPhone(phoneValue.value)
+    setSmsCode({
+      id,
+      user_id,
+      code,
+    })
+    onNextStep(6)
   }
 
   return (

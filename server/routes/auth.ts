@@ -1,6 +1,5 @@
 import express from "express";
 const router = express.Router();
-// import { logger } from "../configs/logger";
 import db from "../db/models";
 import { passport } from "../configs/passport";
 import { generateJwtToken } from "../utils/generateJWT";
@@ -76,21 +75,52 @@ router.post(
   "/phone",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { phone, id: user_id } = req.body;
-    console.log(req.user);
-    // const { id: user_id } = req.user;
-    const code = Math.floor(1000 + Math.random() * 9000);
+    try {
+      const { phone } = req.body;
+      const { id: user_id } = req.user;
+      const code = Math.floor(1000 + Math.random() * 9000);
 
-    if (!phone) {
-      return res.status(400).send("Phone number not find");
+      if (!phone) {
+        return res.status(400).send("Phone number not find");
+      }
+
+      const created = await db.codes.create({
+        user_id,
+        code,
+        phone,
+      });
+      if (created) {
+        res.status(201).send(created.toJSON());
+      }
+    } catch (e) {
+      console.log(e);
     }
+  }
+);
 
-    const created = await db.codes.create({
-      user_id,
-      code,
-      phone,
-    });
-    console.log(created);
+router.delete(
+  "/clear/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { code, user_id } = await db.codes.findOne({
+        where: { id },
+      });
+
+      if (!code) {
+        return res.status(400).json({ message: "Code not found" });
+      }
+      await db.users.update({ isActive: 1 }, { where: { id: user_id } });
+      const response = await db.codes.destroy({ where: { id } });
+      if (response === 1) {
+        return res.status(200).json("Code successfully deleted");
+      } else {
+        return res.status(400).json({ message: "Error deleting" });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 );
 
