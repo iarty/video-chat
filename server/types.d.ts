@@ -1,17 +1,17 @@
 declare global {
   namespace Express {
     interface User {
-      id: string;
+      id: number;
     }
   }
 }
 
 export interface IUserData {
-  id?: string;
+  id?: number;
   email?: string;
   fullname?: string;
   avatarUrl?: string;
-  isActive?: boolean;
+  isActive?: number;
   username?: string;
   phone?: string;
   provider?: string;

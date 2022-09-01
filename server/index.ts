@@ -3,7 +3,6 @@ dotenv.config();
 
 import express from "express";
 import auth from "./routes/auth";
-import session from "express-session";
 import { logger } from "./configs/logger";
 import db from "./db/models";
 import upload from "./routes/upload";
@@ -16,7 +15,7 @@ const PORT = process.env.APP_PORT || 7777;
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(cookieParser());
 
 app.use(passport.initialize());
@@ -30,7 +29,6 @@ app.get("/", (req, res) => {
 
 const start = async () => {
   createFolder("/public/avatars");
-  // logger("initialize-app").info("Database & tables created!");
   try {
     app.listen(PORT, () => {
       logger("initialize-app").info(
@@ -48,7 +46,6 @@ const start = async () => {
 
     console.log("Connection has been established successfully.");
   } catch (error) {
-    logger("initialize-app").error(error);
     console.error("Unable to connect to the database:", error);
   }
 };

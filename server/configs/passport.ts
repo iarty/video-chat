@@ -1,8 +1,9 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth";
 import GithubStrategy from "passport-github2";
-import JWTStrategy from "passport-jwt";
+import { Strategy as JwtStrategy, StrategyOptions } from "passport-jwt";
 import db from "../db/models";
+import { IUserData } from "../types";
 
 passport.use(
   "google",
@@ -24,7 +25,7 @@ passport.use(
       if (foundUser) {
         return done(null, foundUser.toJSON());
       } else {
-        const data = {
+        const data: IUserData = {
           email: emails?.[0].value,
           fullname: displayName,
           avatarUrl: photos?.[0].value,
@@ -67,7 +68,7 @@ passport.use(
       if (foundUser) {
         return done(null, foundUser.toJSON());
       } else {
-        const data = {
+        const data: IUserData = {
           fullname: displayName,
           avatarUrl: photos?.[0].value,
           isActive: 0,
@@ -90,25 +91,25 @@ passport.use(
   )
 );
 
-passport.use(
-  new JWTStrategy.Strategy(
-    {
-      jwtFromRequest: (req) => {
-        let token = null;
-        if (req && req.cookies) {
-          token = req.cookies.jwt;
-        }
-        return token;
-      },
-      secretOrKey: process.env.JWT_SECRET,
-    },
-    (jwtPayload, done) => {
-      if (!jwtPayload) {
-        return done("No token found...");
-      }
-      return done(null, jwtPayload);
+const opts: StrategyOptions = {
+  jwtFromRequest: (req) => {
+    let token = null;
+    if (req && req.cookies) {
+      token = req.cookies.jwt;
     }
-  )
+    return token;
+  },
+  secretOrKey: process.env.JWT_SECRET,
+};
+
+passport.use(
+  "jwt",
+  new JwtStrategy(opts, (jwtPayload, done) => {
+    if (!jwtPayload) {
+      return done("No token found...");
+    }
+    return done(null, jwtPayload);
+  })
 );
 
 passport.serializeUser((user, done) => {

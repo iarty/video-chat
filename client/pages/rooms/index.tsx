@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import styled from 'styled-components'
 import Button from 'components/Button'
 import { CompactDiscIcon, PlusIcon } from 'react-line-awesome'
@@ -7,6 +6,7 @@ import Link from 'next/link'
 // import { apiV1 } from '../../core/request'
 import { IConversationCard } from '../../models/room'
 import axios from 'axios'
+import { NextPage } from 'next'
 
 const RoomsPageWrapper = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ interface IProps {
   rooms: IConversationCard[]
 }
 
-const Rooms: FC<IProps> = ({ rooms }) => {
+const Rooms: NextPage<IProps> = ({ rooms }) => {
   return (
     <RoomsPageWrapper>
       <RoomsTitleWrap>

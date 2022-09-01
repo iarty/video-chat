@@ -26,6 +26,12 @@ const StepComponents: ISteps = {
   6: EnterActivateCodeStep,
 }
 
+interface ISmsCode {
+  id: number
+  user_id: number
+  code: string
+}
+
 interface IMainContext {
   onNextStep: (val: number) => void
   setUserData: Dispatch<SetStateAction<IUserData | undefined>>
@@ -35,6 +41,8 @@ interface IMainContext {
   ) => void
   step: number
   userData: IUserData | undefined
+  smsCode: ISmsCode | undefined
+  setSmsCode: Dispatch<SetStateAction<ISmsCode | undefined>>
 }
 
 type ValueOf<T> = T[keyof T]
@@ -44,6 +52,7 @@ export const MainContext = createContext<IMainContext>({} as IMainContext)
 const InitialPage: NextPage = () => {
   const [step, setStep] = useState<number>(1)
   const [userData, setUserData] = useState<IUserData>()
+  const [smsCode, setSmsCode] = useState<ISmsCode>()
   const Step = StepComponents[step as keyof ISteps]
   const onNextStep = (pageNumber: number) => setStep(pageNumber)
 
@@ -56,7 +65,7 @@ const InitialPage: NextPage = () => {
       [field]: value,
     }))
   }
-  console.log({ userData })
+  console.log({ userData, smsCode })
   return (
     <div>
       <Head>
@@ -70,6 +79,8 @@ const InitialPage: NextPage = () => {
             setUserData,
             userData,
             setFieldValueHelper,
+            smsCode,
+            setSmsCode,
           }}
         >
           <Step />
