@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 import nanoid from "nanoid";
-const uploadPath = path.join(__dirname, "public");
+const uploadPath = path.join(process.cwd(), "public");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

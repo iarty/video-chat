@@ -50,8 +50,8 @@ const StyledCodeInput = styled.input`
   text-align: center;
 `
 
-const clearCode = async (id: number): Promise<AxiosResponse> => {
-  return await apiV1.delete(`/auth/clear/${id}`)
+const activate = async (id: number): Promise<AxiosResponse> => {
+  return await apiV1.get(`/auth/activate/${id}`)
 }
 
 const EnterActivateCodeStep: NextPage = memo(function EnterActivateCodeStep() {
@@ -67,8 +67,9 @@ const EnterActivateCodeStep: NextPage = memo(function EnterActivateCodeStep() {
     try {
       setLoading(true)
       if (smsCode?.id) {
-        await clearCode(smsCode.id)
+        await activate(smsCode.id)
       }
+      window.localStorage.clear()
       await apiV1.get('https://jsonplaceholder.typicode.com/todos')
       await router.push('/rooms')
     } catch (error) {

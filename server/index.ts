@@ -8,7 +8,7 @@ import db from "./db/models";
 import upload from "./routes/upload";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { createFolder } from "./createFolder";
+import { createFolder } from "./utils/createFolder";
 import { passport } from "./configs/passport";
 
 const PORT = process.env.APP_PORT || 7777;
