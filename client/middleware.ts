@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verify } from './utils/checkJwt'
+import { verify } from './src/utils/checkJwt'
 const PUBLIC_FILE = /\.(.*)$/
 
 export async function middleware(req: NextRequest) {
@@ -29,9 +29,10 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(req.nextUrl)
     }
   }
-  if (pathname.startsWith('/') && jwt) {
+  if (pathname === '/' && jwt) {
     req.nextUrl.pathname = '/rooms'
     return NextResponse.redirect(req.nextUrl)
   }
+
   return NextResponse.next()
 }
