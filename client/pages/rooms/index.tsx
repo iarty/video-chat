@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import Button from 'components/Button'
+import Button from 'src/components/Button'
 import { CompactDiscIcon, PlusIcon } from 'react-line-awesome'
-import ConversationCard from '@/components/ConversationCard'
+import ConversationCard from '../../src/components/ConversationCard'
 import Link from 'next/link'
 
 import { IConversationCard } from '../../models/room'

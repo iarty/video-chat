@@ -1,9 +1,16 @@
 import styled from 'styled-components'
 import { EllipsisVIcon } from 'react-line-awesome'
-import Avatar from '@/components/Avatar'
-import Button from '@/components/Button'
-import BackButton from '@/components/BackButton'
+import Avatar from '../../src/components/Avatar'
+import Button from '../../src/components/Button'
+import BackButton from '../../src/components/BackButton'
 import { NextPage } from 'next'
+import { useGetUserByIdQuery } from '../../src/redux/api/user.api'
+import {
+  withQueryResolver,
+  WithQueryResolverData,
+} from '../../src/hoc/withQueryResolver'
+import { useRouter } from 'next/router'
+import { FC } from 'react'
 
 const ProfilePageWrapper = styled.div`
   display: flex;
@@ -84,19 +91,16 @@ const StyledEllipsis = styled(EllipsisVIcon)`
   color: #969696;
   cursor: pointer;
 `
-interface IProfileProps {
-  fullname: string
-  username: string
-  avatarUrl: string
-  about: string
+
+type Resolvers = WithQueryResolverData<typeof useGetUserByIdQuery>
+
+interface IProfileProps extends Resolvers {
+  disableReload?: () => void
 }
 
-const ProfilePage: NextPage<IProfileProps> = ({
-  fullname,
-  username,
-  avatarUrl,
-  about,
-}) => {
+const ProfilePage: FC<IProfileProps> = ({ queryData }) => {
+  const { fullname, username, avatarUrl } = queryData
+
   return (
     <ProfilePageWrapper>
       <BackButton container={false} title="Back" />
@@ -122,10 +126,22 @@ const ProfilePage: NextPage<IProfileProps> = ({
             </FollowInner>
           </FollowersWrapper>
         </UserInfoWrapper>
-        <UserDescriptionWrapper>{about}</UserDescriptionWrapper>
+        <UserDescriptionWrapper>{'about'}</UserDescriptionWrapper>
       </div>
     </ProfilePageWrapper>
   )
 }
 
-export default ProfilePage
+const WithProfilePageQuery = withQueryResolver(useGetUserByIdQuery)(ProfilePage)
+
+const WithUserQueryProfilePage: FC = () => {
+  const {
+    query: { id },
+  } = useRouter()
+
+  if (typeof id !== 'string') return <div />
+
+  return <WithProfilePageQuery queryArg={id} disableLoading={false} />
+}
+
+export default WithUserQueryProfilePage

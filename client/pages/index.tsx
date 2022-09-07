@@ -5,13 +5,12 @@ import {
   useEffect,
   useState,
 } from 'react'
-import Head from 'next/head'
-import WelcomeStep from 'components/InitialSteps/WelcomeStep'
-import EnterNameStep from '@/components/InitialSteps/EnterNameStep'
-import SocialsStep from '@/components/InitialSteps/SocialsStep'
-import AvatarStep from '@/components/InitialSteps/AvatarStep'
-import PhoneNumberStep from '@/components/InitialSteps/PhoneNumberStep'
-import EnterActivateCodeStep from '@/components/InitialSteps/EnterActivateCodeStep'
+import WelcomeStep from 'src/components/InitialSteps/WelcomeStep'
+import EnterNameStep from '../src/components/InitialSteps/EnterNameStep'
+import SocialsStep from '../src/components/InitialSteps/SocialsStep'
+import AvatarStep from '../src/components/InitialSteps/AvatarStep'
+import PhoneNumberStep from '../src/components/InitialSteps/PhoneNumberStep'
+import EnterActivateCodeStep from '../src/components/InitialSteps/EnterActivateCodeStep'
 import { NextPage } from 'next'
 import { IUserData } from '../models/user'
 
@@ -132,26 +131,19 @@ const InitialPage: NextPage = () => {
   }
 
   return (
-    <div>
-      <Head>
-        <title>VideoChat</title>
-      </Head>
-      <main>
-        <MainContext.Provider
-          value={{
-            step,
-            onNextStep,
-            setUserData,
-            userData,
-            setFieldValueHelper,
-            smsCode,
-            setSmsCode,
-          }}
-        >
-          <Step />
-        </MainContext.Provider>
-      </main>
-    </div>
+    <MainContext.Provider
+      value={{
+        step,
+        onNextStep,
+        setUserData,
+        userData,
+        setFieldValueHelper,
+        smsCode,
+        setSmsCode,
+      }}
+    >
+      <Step />
+    </MainContext.Provider>
   )
 }
 

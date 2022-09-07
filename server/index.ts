@@ -2,10 +2,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
+import user from "./routes/user";
 import auth from "./routes/auth";
+import upload from "./routes/upload";
 import { logger } from "./configs/logger";
 import db from "./db/models";
-import upload from "./routes/upload";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { createFolder } from "./utils/createFolder";
@@ -20,12 +21,13 @@ app.use(cookieParser());
 
 app.use(passport.initialize());
 
-app.use("/api", express.static("public"));
-app.use("/api/auth", auth);
-app.use("/api/upload", upload);
 app.get("/", (req, res) => {
   res.redirect("/api");
 });
+app.use("/api", express.static("public"));
+app.use("/api/auth", auth);
+app.use("/api/upload", upload);
+app.use("/api/user", user);
 
 const start = async () => {
   createFolder("/public/avatars");
