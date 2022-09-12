@@ -6,6 +6,8 @@ import Link from 'next/link'
 
 import { IConversationCard } from '../../models/room'
 import { NextApiRequest, NextApiResponse, NextPage } from 'next'
+import CreateRoomModal from '../../src/components/Modal'
+import { useState } from 'react'
 
 const RoomsPageWrapper = styled.div`
   display: flex;
@@ -45,6 +47,16 @@ interface IProps {
 }
 
 const Rooms: NextPage<IProps> = ({ rooms }) => {
+  const [showModal, setShowModal] = useState<boolean>(false)
+
+  const openModal = () => {
+    setShowModal(true)
+  }
+
+  const closeModal = () => {
+    setShowModal(false)
+  }
+
   return (
     <RoomsPageWrapper>
       <RoomsTitleWrap>
@@ -55,7 +67,7 @@ const Rooms: NextPage<IProps> = ({ rooms }) => {
             Explore
           </Button>
         </RoomsTitleInner>
-        <Button color="#45c936">
+        <Button color="#45c936" onClick={openModal}>
           <PlusIcon /> Start room
         </Button>
       </RoomsTitleWrap>
@@ -75,6 +87,7 @@ const Rooms: NextPage<IProps> = ({ rooms }) => {
           </Link>
         ))}
       </CardsWrap>
+      <CreateRoomModal onClose={closeModal} show={showModal} />
     </RoomsPageWrapper>
   )
 }
